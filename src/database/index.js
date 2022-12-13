@@ -1,21 +1,24 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose")
 
 
 
-// conectando ao bd
 function connect() {
-    mongoose.set('strictQuery', true)
 
-    mongoose.connect('mongodb://0.0.0.0:27017/')
+    mongoose.set('strictQuery', true)
+    mongoose.connect('mongodb://0.0.0.0:27017/projeto-crud')
+
     const db = mongoose.connection
 
 
     db.once('open', () => {
-        console.log('connected to dataBase')
+        console.log('connectado ao bando de dados')
     })
 
-    db.on('error', console.error.bind(console, "connection error"))
+    db.on('error', console.error.bind(console, 'connection error: '))
+
 }
+
+
 
 module.exports = {
     connect

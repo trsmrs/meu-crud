@@ -1,11 +1,8 @@
+
 const router = require('express').Router()
 
+const CustomersController = require('../controllers/customers')
 
-
-
-
-
-// rotas
 
 router.get('/', (req, res)=>{
     res.render('index',{
@@ -14,10 +11,32 @@ router.get('/', (req, res)=>{
 })
 
 
-// 404 error
+router.get('/register', (req, res)=>{
+    res.render('register',{
+        title: 'Página de Clientes'
+    })
+})
+
+router.post('/register/add', CustomersController.add)
+
+
+// 404 not found
 router.use((req, res)=>{
-    res.send('Página não encontrada!!')
+    res.send('Página not Encontred!')
 })
 
 
+
+
+
+
+
+
+
+
+
+
 module.exports = router
+
+
+
