@@ -1,23 +1,34 @@
-
 const router = require('express').Router()
 
+
+// const AuthController = require('../controllers/auth')
 const CustomersController = require('../controllers/customers')
+const IndexController = require('../controllers/index')
 
 
-router.get('/', (req, res)=>{
-    res.render('index',{
-        title: 'Página Inicial'
-    })
-})
+// rotas
+router.get('/', IndexController.index)
 
 
-router.get('/register', (req, res)=>{
-    res.render('register',{
-        title: 'Página de Clientes'
-    })
-})
-
+//  registro
+router.get('/register', CustomersController.index)
 router.post('/register/add', CustomersController.add)
+
+
+//  Listar
+router.get('/list', CustomersController.listUsers)
+
+
+
+
+
+// editar
+router.get('/edit', CustomersController.indexEdit)
+router.post('/edit/:id', CustomersController.edit)
+
+
+// remover
+router.get('/remove/:id', CustomersController.remove)
 
 
 // 404 not found

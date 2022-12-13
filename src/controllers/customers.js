@@ -1,7 +1,17 @@
 const CustomersModel = require('../models/customers')
-const {crypto} = require('../utils/password')
+const { crypto } = require('../utils/password')
 
-async function add(req, res){
+const defaultTitle = 'Cadastro de Clientes'
+
+function index(req, res) {
+    res.render('register', {
+        title: 'Página de Clientes'
+    })
+}
+
+
+
+async function add(req, res) {
     const {
         name,
         age,
@@ -10,7 +20,7 @@ async function add(req, res){
     } = req.body
 
 
-  const passwordCrypto = await crypto(password)
+    const passwordCrypto = await crypto(password)
 
     const register = new CustomersModel({
         name,
@@ -21,13 +31,82 @@ async function add(req, res){
 
 
 
- register.save()
+    register.save()
+
+    res.render('register', {
+        title: defaultTitle,
+        message: 'Cadastro realizado com sucesso!'
+    })
+}
 
 
-    res.send('gravado')
+
+
+async function listUsers(req, res) {
+    const users = await CustomersModel.find()
+
+    res.render('listUsers', {
+        title: 'Listagem de usuários',
+        users,
+    })
+}
+
+
+
+async function indexEdit(req, res) {
+    const { id } = req.query
+
+    const user = await CustomersModel.findById(id)
+
+    res.render('editUsers', {
+        title: 'Editar Usuário',
+        user,
+    })
+}
+
+
+async function edit(req, res) {
+    const {
+        name,
+        age,
+        email,
+    } = req.body
+
+    const { id } = req.params
+
+    const user = await CustomersModel.findById(id)
+
+    user.name = name
+    user.age = age
+    user.email = email
+
+    user.save()
+
+    res.render('editUsers', {
+        title: 'Editar Usuário',
+        user,
+        message: "Usuário alterado com sucesso!"
+    })
+}
+
+
+
+
+async function remove(req, res) {
+    const { id } = req.params
+    
+    const remove = await CustomersModel.deleteOne({ _id: id })
+    if(remove){
+        res.redirect('/list')
+    }
 }
 
 
 module.exports = {
-    add
+    index,
+    add,
+    listUsers,
+    indexEdit,
+    edit,
+    remove,
 }
